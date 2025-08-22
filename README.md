@@ -15,5 +15,6 @@
 - Electronics measurement & semiconductor lab experience
 
 ## 📫 How to reach me
-- [LinkedIn](https://www.linkedin.com/in/mikołaj-sala-51256433a/) 
+- [LinkedIn](https://www.linkedin.com/in/mikołaj-sala-51256433a/)
+- [ResearchGate](https://www.researchgate.net/profile/Mikolaj-Sala)
 - Email: msala@student.agh.edu.pl
