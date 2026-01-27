@@ -114,9 +114,6 @@ The project includes full LTspice testbenches:
 - Gain slopes ≈ 40 dB/dec  
 - Proper crossover between bands  
 
-<p align="center">
-  <img src="img/gains.png" width="80%">
-</p>
 
 ---
 
@@ -131,10 +128,6 @@ Results:
 | THD | < 0.5 % | **0.0001 %** |
 | Stability | Stable after ~3.5 ms | Confirmed |
 
-<p align="center">
-  <img src="img/trans.png" width="80%">
-</p>
-
 ---
 
 ### ✔ Monte Carlo Analysis
@@ -144,10 +137,6 @@ Component tolerances included:
 - Capacitors ±10 %  
 
 Confirms robustness of frequency response across variations.
-
-<p align="center">
-  <img src="img/monte.png" width="80%">
-</p>
 
 ---
 
@@ -183,18 +172,18 @@ Although simulations met all requirements, the assembled hardware did not fully 
 
 ## 📁 Repository Structure
 .
-├── README.md
-├── LICENSE
-│
-├── img/            # Plots, diagrams, PCB renders
-├── spice/          # LTspice simulations and models
-│   ├── models/
-│   ├── ac/
-│   ├── transient/
-│   └── monte_carlo/
-│
-├── pcb/            # Schematics, layout, gerbers, 3D views
-└── documentation/         # LaTeX report sources
+├── README.md \
+├── LICENSE\
+│\
+├── img/ \            # Plots, diagrams, PCB renders
+├── spice/ \          # LTspice simulations and models
+│   ├── models/ \
+│   ├── ac/ \
+│   ├── transient/ \
+│   └── monte_carlo/ \
+| \ 
+├── pcb/ \             # Schematics, layout, gerbers, 3D views
+└── documentation/ \         # LaTeX report sources
 
 
 ---
