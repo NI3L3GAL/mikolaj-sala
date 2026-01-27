@@ -42,10 +42,6 @@ The signal chain consists of three main stages:
 3. **Summing Amplifier**  
    Filtered signals are recombined using an inverting summing amplifier.
 
-<p align="center">
-  <img src="img/block_diagram.jpg" width="80%">
-</p>
-
 ---
 
 ## 🔧 Design Requirements
@@ -70,9 +66,7 @@ Each band is implemented using active RC filters:
 
 Cutoff frequency:
 
-\[
-f_c = \frac{1}{2\pi R_L C_L}
-\]
+$f_c = \frac{1}{2\pi R_L C_L}$
 
 Designed for **100 Hz**.
 
@@ -82,9 +76,7 @@ Designed for **100 Hz**.
 
 Center frequency:
 
-\[
-f_0 = \frac{1}{2\pi R_M C_M}
-\]
+$f_0 = \frac{1}{2\pi R_M C_M}$
 
 Designed for **1 kHz**.
 
@@ -94,9 +86,7 @@ Designed for **1 kHz**.
 
 Cutoff frequency:
 
-\[
-f_c = \frac{1}{2\pi R_H C_H}
-\]
+$f_c = \frac{1}{2\pi R_H C_H}$
 
 Designed for **10 kHz**.
 
@@ -177,13 +167,13 @@ Although simulations met all requirements, the assembled hardware did not fully 
 │ \
 ├── img/             # Plots, diagrams, PCB renders \
 ├── spice/           # LTspice simulations and models \
-│   ├── models/ \
-│   ├── ac/ \
-│   ├── transient/ \
-│   └── monte_carlo/ \
-| \ 
+│     ├── models/ \
+│     ├── ac/ \
+│     ├── transient/ \
+│     └── monte_carlo/ \
+|  
 ├── pcb/              # Schematics, layout, gerbers, 3D views \ 
-└── documentation/ \         # report sources \ 
+└── documentation/          # report sources \ 
 
 
 ---
