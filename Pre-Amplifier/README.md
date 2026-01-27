@@ -171,10 +171,10 @@ Although simulations met all requirements, the assembled hardware did not fully 
 ---
 
 ## 📁 Repository Structure
-.
+
 ├── README.md \
-├── LICENSE\
-│\
+├── LICENSE \
+│ \
 ├── img/ \            # Plots, diagrams, PCB renders
 ├── spice/ \          # LTspice simulations and models
 │   ├── models/ \
