@@ -1,0 +1,237 @@
+# 🎚️ Audio Preamplifier with Adjustable Gain and 3-Band Tone Control
+
+High-quality analog audio preamplifier designed and simulated in **LTspice**, featuring adjustable gain and an active three-band tone control (Bass, Mid, Treble).  
+Project developed as part of the **Analog Electronic Circuits** course at AGH University of Science and Technology.
+
+---
+
+## 📌 Project Overview
+
+This project implements a **high-fidelity audio preamplifier** with:
+
+- Adjustable voltage gain (20–40 dB)  
+- Independent 3-band tone control:
+  - **Bass** – 100 Hz  
+  - **Mid** – 1 kHz  
+  - **Treble** – 10 kHz  
+- Parallel active filter topology  
+- Final summing amplifier stage  
+- Dual supply operation (±15 V)  
+
+The design was verified using:
+- AC (frequency response) analysis  
+- Transient + THD analysis  
+- Monte Carlo tolerance analysis  
+- PCB layout and 3D visualization  
+
+---
+
+## 🧱 System Architecture
+
+The signal chain consists of three main stages:
+
+1. **Input & Variable Gain Stage**  
+   Non-inverting amplifier with adjustable gain (10–100 V/V).
+
+2. **Parallel Active Filter Network**  
+   The input signal is split into three independent paths:
+   - Low-Pass (Bass)
+   - Band-Pass (Mid)
+   - High-Pass (Treble)
+
+3. **Summing Amplifier**  
+   Filtered signals are recombined using an inverting summing amplifier.
+
+<p align="center">
+  <img src="img/block_diagram.jpg" width="80%">
+</p>
+
+---
+
+## 🔧 Design Requirements
+
+| Parameter | Target |
+|----------|--------|
+| Gain range | 10 – 100 V/V (20 – 40 dB) |
+| Bass center | 100 Hz |
+| Mid center | 1 kHz |
+| Treble center | 10 kHz |
+| Tone adjustment | ≥ ±10 dB per band |
+| THD @ 1 kHz, 1 Vpp | < 0.5 % |
+| Supply voltage | ±15 V |
+
+---
+
+## 🧮 Filter Design
+
+Each band is implemented using active RC filters:
+
+### Low-Pass (Bass)
+
+Cutoff frequency:
+
+\[
+f_c = \frac{1}{2\pi R_L C_L}
+\]
+
+Designed for **100 Hz**.
+
+---
+
+### Band-Pass (Mid)
+
+Center frequency:
+
+\[
+f_0 = \frac{1}{2\pi R_M C_M}
+\]
+
+Designed for **1 kHz**.
+
+---
+
+### High-Pass (Treble)
+
+Cutoff frequency:
+
+\[
+f_c = \frac{1}{2\pi R_H C_H}
+\]
+
+Designed for **10 kHz**.
+
+Standard capacitor values were selected first, and resistor values were derived and matched to E96 series.
+
+---
+
+## 🔬 LTspice Simulations
+
+The project includes full LTspice testbenches:
+
+### ✔ AC Analysis
+
+- Confirms correct band separation  
+- Gain slopes ≈ 40 dB/dec  
+- Proper crossover between bands  
+
+<p align="center">
+  <img src="img/gains.png" width="80%">
+</p>
+
+---
+
+### ✔ Transient + THD Analysis
+
+Input: 1 kHz, 1 Vpp sinusoid  
+
+Results:
+
+| Parameter | Requirement | Simulated |
+|----------|-------------|-----------|
+| THD | < 0.5 % | **0.0001 %** |
+| Stability | Stable after ~3.5 ms | Confirmed |
+
+<p align="center">
+  <img src="img/trans.png" width="80%">
+</p>
+
+---
+
+### ✔ Monte Carlo Analysis
+
+Component tolerances included:
+- Resistors ±1 %  
+- Capacitors ±10 %  
+
+Confirms robustness of frequency response across variations.
+
+<p align="center">
+  <img src="img/monte.png" width="80%">
+</p>
+
+---
+
+## 🖥️ Hardware Implementation
+
+- **Operational amplifiers:** OPA1678 (final hardware), OPAx134 (simulation models)  
+- **Controls:**  
+  - Gain  
+  - Bass  
+  - Mid  
+  - Treble  
+
+- **Power supply:**  
+  - ±15 V analog rails  
+  - Additional ±5 V USB rail  
+
+### PCB
+
+Designed in **Altium Designer**, 2-layer board with solid ground plane.
+
+
+---
+
+## ⚠️ Known Issues
+
+Although simulations met all requirements, the assembled hardware did not fully operate:
+
+- Filter stages and gain worked correctly  
+- Summing amplifiers failed due to likely potentiometer damage  
+- One OPA1678 was permanently damaged  
+
+---
+
+## 📁 Repository Structure
+.
+├── README.md
+├── LICENSE
+│
+├── img/            # Plots, diagrams, PCB renders
+├── spice/          # LTspice simulations and models
+│   ├── models/
+│   ├── ac/
+│   ├── transient/
+│   └── monte_carlo/
+│
+├── pcb/            # Schematics, layout, gerbers, 3D views
+└── documentation/         # LaTeX report sources
+
+
+---
+
+## 🚀 How to Run Simulations
+
+1. Install **LTspice**
+2. Clone the repository
+3. Open selected `.cir` file from `spice/`
+4. Make sure `OPAx134.lib` is included in the working directory
+5. Run:
+   - `.ac` for frequency response  
+   - `.tran` for transient + THD  
+   - `.step` for Monte Carlo  
+
+---
+
+## 👨‍🎓 Authors
+
+- **Mikołaj Sala**  
+- **Kacper Kochanek**  
+
+Electronics and Telecommunications  
+AGH University of Science and Technology  
+
+---
+
+## 📜 License
+
+This project is provided for **educational and academic purposes**.  
+Feel free to use, modify, and extend with attribution.
+
+---
+
+## ⭐ Acknowledgments
+
+- AGH – Analog Electronic Circuits course  
+- LTspice by Analog Devices  
+- Texas Instruments OPA1678 / OPAx134 models  
+
