@@ -173,7 +173,7 @@ Although simulations met all requirements, the assembled hardware did not fully 
 │     └── monte_carlo/ \
 |  
 ├── pcb/              # Schematics, layout, gerbers, 3D views \
-└── documentation/          # report sources \ 
+└── documentation/          # report sources
 
 
 ---
