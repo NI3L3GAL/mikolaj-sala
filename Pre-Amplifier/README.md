@@ -175,15 +175,15 @@ Although simulations met all requirements, the assembled hardware did not fully 
 ├── README.md \
 ├── LICENSE \
 │ \
-├── img/ \            # Plots, diagrams, PCB renders
-├── spice/ \          # LTspice simulations and models
+├── img/             # Plots, diagrams, PCB renders \
+├── spice/           # LTspice simulations and models \
 │   ├── models/ \
 │   ├── ac/ \
 │   ├── transient/ \
 │   └── monte_carlo/ \
 | \ 
-├── pcb/ \             # Schematics, layout, gerbers, 3D views
-└── documentation/ \         # LaTeX report sources
+├── pcb/              # Schematics, layout, gerbers, 3D views \ 
+└── documentation/ \         # report sources \ 
 
 
 ---
