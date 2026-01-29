@@ -115,7 +115,7 @@ Results:
 
 | Parameter | Requirement | Simulated |
 |----------|-------------|-----------|
-| THD | < 0.5 % | **0.05 %** |
+| THD | < 0.5 % | **~0.05 %** |
 | Stability | Stable after ~12 ms | Confirmed |
 
 ---
@@ -166,10 +166,10 @@ Although simulations met all requirements, the assembled hardware did not fully 
 │ \
 ├── img/             # Plots, diagrams, PCB renders \
 ├── spice/           # LTspice simulations and models \
-│     ├── models/ \
-│     ├── ac/ \
-│     ├── transient/ \
-│     └── monte_carlo/ \
+│     ├── models \
+│     ├── ac simulation \
+│     ├── transient simulation \
+│     └── monte_carlo analysis \
 |  
 ├── pcb/              # Schematics, layout, gerbers, 3D views \
 └── documentation/          # report sources
@@ -186,7 +186,7 @@ Although simulations met all requirements, the assembled hardware did not fully 
 5. Run:
    - `ac_preamp.cir` for frequency response  
    - `tran_preamp.cir` for transient + THD  
-   - `monte_preamp` for Monte Carlo  
+   - `monte_preamp.cir` for Monte Carlo  
 
 ---
 
