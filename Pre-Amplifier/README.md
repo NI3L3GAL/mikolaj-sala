@@ -115,8 +115,8 @@ Results:
 
 | Parameter | Requirement | Simulated |
 |----------|-------------|-----------|
-| THD | < 0.5 % | **0.0001 %** |
-| Stability | Stable after ~3.5 ms | Confirmed |
+| THD | < 0.5 % | **0.05 %** |
+| Stability | Stable after ~12 ms | Confirmed |
 
 ---
 
