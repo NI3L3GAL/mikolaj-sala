@@ -109,7 +109,7 @@ The project includes full LTspice testbenches:
 
 ### ✔ Transient + THD Analysis
 
-Input: 1 kHz, 1 Vpp sinusoid  
+Input: 1 kHz, 10mVpp sinusoid  
 
 Results:
 
@@ -134,18 +134,18 @@ Confirms robustness of frequency response across variations.
 
 - **Operational amplifiers:** OPA1678 (final hardware), OPAx134 (simulation models)  
 - **Controls:**  
-  - Gain  
+  - Main gain  
   - Bass  
   - Mid  
   - Treble  
 
 - **Power supply:**  
   - ±15 V analog rails  
-  - Additional ±5 V USB rail  
+  - Additional ±5 V rail via USB  
 
 ### PCB
 
-Designed in **Altium Designer**, 2-layer board with solid ground plane.
+Designed in **Altium Designer**, 2-layer board with solid ground planes.
 
 
 ---
@@ -154,7 +154,6 @@ Designed in **Altium Designer**, 2-layer board with solid ground plane.
 
 Although simulations met all requirements, the assembled hardware did not fully operate:
 
-- Filter stages and gain worked correctly  
 - Summing amplifiers failed due to likely potentiometer damage  
 - One OPA1678 was permanently damaged  
 
@@ -185,9 +184,9 @@ Although simulations met all requirements, the assembled hardware did not fully 
 3. Open selected `.cir` file from `spice/`
 4. Make sure `OPAx134.lib` is included in the working directory
 5. Run:
-   - `.ac` for frequency response  
-   - `.tran` for transient + THD  
-   - `.step` for Monte Carlo  
+   - `ac_preamp.cir` for frequency response  
+   - `tran_preamp.cir` for transient + THD  
+   - `monte_preamp` for Monte Carlo  
 
 ---
 
