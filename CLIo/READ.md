@@ -1,41 +1,43 @@
 # ATmega Bare-Metal CLI & Auto-Baud UART 🚀
 
-Lekki, oparty na przerwaniach interfejs wiersza poleceń (CLI) dla mikrokontrolerów AVR (np. ATmega328P). Projekt został napisany w czystym języku C (bare-metal), całkowicie omijając framework Arduino. Udowadnia, jak zoptymalizować pracę procesora, pozbywając się blokujących funkcji typu `_delay_ms()`.
+A lightweight, interrupt-driven Command Line Interface (CLI) for AVR microcontrollers (e.g., ATmega328PB). The project is written in pure C (bare-metal), completely bypassing the Arduino framework. It demonstrates how to optimize processor performance by getting rid of blocking functions like `_delay_ms()`.
 
-### 🚀 Główne funkcjonalności
-* 🔄 **Auto-Baud Rate:** Mikrokontroler sam wykrywa prędkość terminala (57600, 38400, 19200, 9600 bps) na podstawie jednego znaku synchronizującego (`U`).
-* ⚡ **Nieblokująca architektura:** Znaki odbierane są w tle przez przerwanie `USART0_RX_vect`. Pętla główna reaguje dopiero, gdy całe polecenie jest gotowe.
-* ⏱️ **Asynchroniczny Timer:** Sprzętowy `Timer1` działa w trybie CTC, tworząc niezależny licznik czasu (podobnie do `millis()`). Pozwala to np. na miganie diodą w tle, podczas gdy CLI cały czas nasłuchuje.
-* 🧠 **Lekki, autorski parser:** Zamiast ciężkiej biblioteki `<string.h>`, napisałem własne, zoptymalizowane funkcje (`strcomp`, `starts_with`), aby maksymalnie oszczędzać pamięć Flash.
+### 🚀 Key Features
 
-### 🛠️ Technologie i architektura
+* 🔄 **Auto-Baud Rate:** The microcontroller automatically detects the terminal's baud rate (57600, 38400, 19200, 9600 bps) based on a single synchronization character (`U`).
+* ⚡ **Non-blocking Architecture:** Characters are received in the background via the `USART0_RX_vect` interrupt. The main loop only reacts when the entire command is ready.
+* ⏱️ **Asynchronous Timer:** Hardware `Timer1` operates in CTC mode, creating an independent time counter (similar to `millis()`). This allows for background tasks, like LED blinking, while the CLI continuously listens.
+* 🧠 **Lightweight Custom Parser:** Instead of the heavy `<string.h>` library, I wrote custom, optimized functions (`strcomp`, `starts_with`) to maximize Flash memory savings.
 
-**Hardware & Ekosystem**
-* Mikrokontrolery z rodziny AVR (np. Arduino Uno)
-* C (avr-gcc), obsługa rejestrów sprzętowych
-* Biblioteki bazowe: `<avr/interrupt.h>`, `<avr/boot.h>`
+### 🛠️ Technology Stack & Architecture
 
-**Kluczowe mechanizmy**
-* Przerwania sprzętowe (ISR) do asynchronicznej obsługi zdarzeń
-* Ręczna konfiguracja układów peryferyjnych (UART, Timery)
-* Odczyt unikalnego ID procesora (Boot Signature)
+**Hardware & Ecosystem**
+* AVR family microcontrollers (e.g., Arduino Uno)
+* C (avr-gcc), direct hardware register manipulation
+* Core libraries: `<avr/interrupt.h>`, `<avr/boot.h>`
 
-### 💻 Dostępne polecenia CLI
+**Key Mechanisms**
+* Hardware Interrupt Service Routines (ISR) for asynchronous event handling
+* Manual configuration of hardware peripherals (UART, Timers)
+* Reading the unique MCU ID (Boot Signature)
 
-Wszystkie polecenia muszą zostać zakończone znakiem nowej linii (klawisz Enter).
+### 💻 Available CLI Commands
 
-| Komenda | Opis |
+All commands must be terminated with a newline character (Enter key).
+
+| Command | Description |
 | :--- | :--- |
-| `LED on` / `LED off` | Włącza lub wyłącza diodę testową (podpiętą pod PB5). |
-| `PING` | Zwraca sprzętowy numer seryjny układu (hex). |
-| `BLINK <ms>` | Uruchamia sprzętowe miganie diody w tle co X milisekund (np. `BLINK 500`). Mikrokontroler się nie zawiesza i dalej odbiera komendy! |
-| `BLINK off` | Wyłącza asynchroniczne miganie. |
+| `LED on` / `LED off` | Turns the test LED (connected to PB5) on or off. |
+| `PING` | Returns the hardware serial number of the MCU (hex). |
+| `BLINK <ms>` | Starts hardware LED blinking in the background every X milliseconds (e.g., `BLINK 500`). The microcontroller does not freeze and continues to receive commands! |
+| `BLINK off` | Stops the asynchronous blinking. |
 
-### 📫 Jak to uruchomić (Quick Start)?
-1. Wgraj program na swój mikrokontroler.
-2. Otwórz terminal szeregowy (np. RealTerm, minicom, PuTTY).
-3. Ustaw jedną z obsługiwanych prędkości (np. `57600`).
-4. Zresetuj MCU i **wyślij wielką literę `U`**.
-5. Gdy zobaczysz komunikat `--- AUTO-BAUD OK! ---`, CLI jest zsynchronizowane i gotowe do pracy.
+### 📫 How to Run (Quick Start)?
+
+1. Flash the program onto your microcontroller.
+2. Open a serial terminal (e.g., RealTerm, minicom, PuTTY).
+3. Set one of the supported baud rates (e.g., `57600`).
+4. Reset the MCU and **send an uppercase `U` character**.
+5. When you see the `--- AUTO-BAUD OK! ---` message, the CLI is synchronized and ready for operation.
 
 ---
