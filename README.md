@@ -1,6 +1,6 @@
 # Hi, I’m Mikołaj 👋
 
-🎓 2nd year Electronics & Telecommunications student at **AGH University of Science and Technology**  
+🎓 3nd year Electronics & Telecommunications student at **AGH University of Science and Technology**  
 🚀 Team lead of **AGH Space Systems** (Rocket Electronics Division)  
 🔧 Passionate about **hardware design, PCB development, and aerospace electronics**  
 
@@ -15,6 +15,7 @@
 - PCB design: Altium Designer
 - Simulations: TSpice software
 - Electronics measurement & semiconductor lab experience
+- Learning Embedded programing C/ASM
 
 ## 📫 How to reach me
 - [LinkedIn](https://www.linkedin.com/in/mikołaj-sala-51256433a/)
