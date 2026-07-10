@@ -2,17 +2,21 @@
 #include "qdp_protocol.h"
 
 
-// -- Sender definitions-- //
+// -- Global definitions -- //
 
-// BSRR offset definition
+#define PHY_IDLE_STATE (DP_LSB_R | DP_MSB_R | DN_LSB_R | DN_MSB_R )
+#define PC_TEST_ENV // <-- Tylko do testów sprzętowych
+
+
 // -- Sender definitions-- //
 
 #ifdef PC_TEST_ENV
     // ==========================================
-    // WERSJA DLA PC (Do testów jednostkowych)
-    // Podstawiamy unikalne wartości, żeby sprawdzić 
-    // czy LUT poprawnie się buduje.
+    // VERSION FOR PC (for unity tests)
+    // Some unique values to check
+    // if the LUT works properly
     // ==========================================
+
     #define DP_LSB_R (0x01)
     #define DP_MSB_R (0x02)
     #define DP_LSB_S (0x04)
@@ -25,40 +29,37 @@
 
 #else
     // ==========================================
-    // WERSJA DLA STM32 (Prawdziwy sprzęt)
-    // W rejestrze BSRR dolne 16 bitów to SET (S),
-    // a górne 16 bitów to RESET (R).
-    // Załóżmy testowo, że używasz pinów PA0-PA3.
+    // Version for STM32
+    // In BSRR register lower 16bits are SET (S),
+    // and higher 16bits are RESET (R).
+    // For now we use PA0-3
     // ==========================================
+
     #define PIN_DP_LSB 0
     #define PIN_DP_MSB 1
     #define PIN_DN_LSB 2
     #define PIN_DN_MSB 3
 
-    // Operacje Ustawiania (SET) - dolna połowa rejestru
+    // SET operations - lower half of the register
     #define DP_LSB_S (1UL << PIN_DP_LSB)
     #define DP_MSB_S (1UL << PIN_DP_MSB)
     #define DN_LSB_S (1UL << PIN_DN_LSB)
     #define DN_MSB_S (1UL << PIN_DN_MSB)
 
-    // Operacje Zerowania (RESET) - górna połowa rejestru (+16 bitów)
+    // RESET operations - higher half of the register
     #define DP_LSB_R (1UL << (PIN_DP_LSB + 16))
     #define DP_MSB_R (1UL << (PIN_DP_MSB + 16))
     #define DN_LSB_R (1UL << (PIN_DN_LSB + 16))
     #define DN_MSB_R (1UL << (PIN_DN_MSB + 16))
 #endif
+
 // -- Receiver definitions -- //
+
 extern volatile PHY_RX_State_t rx_state;
 uint16_t remaining_bytes_to_read = 0;
 
 static PHY_HeaderReceived_Callback_t dl_header_cb   = NULL;
 static PHY_FrameReceived_Callback_t  dl_frame_cb    = NULL;
-
-// -- Globa definitions -- //
-
-#define PC_TEST_ENV // <-- Tylko do testów sprzętowych
-
-#define PHY_IDLE_STATE (DP_LSB_R | DP_MSB_R | DN_LSB_R | DN_MSB_R )
 
 // -- Sender physical logic -- //
 
@@ -69,6 +70,7 @@ static const uint32_t QDP_TX_LUT[QDP_LOGIC_STATES] = {
     [2] = (DP_LSB_S | DP_MSB_S | DN_LSB_R | DN_MSB_R ), // 10 dp = 2V2 dm = -1V1
 };
 // Header(5) + Payload(255) + CRC(4) = 264 bajty * 4 = 1056 
+
 static uint32_t phy_tx_buffer[QDP_MAX_FRAME_BYTES*QDP_LOGIC_STATES];
 static uint8_t phy_rx_buffer[QDP_MAX_FRAME_BYTES*QDP_LOGIC_STATES];
 
@@ -99,30 +101,23 @@ void PHY_Send(const uint8_t* frame_data, uint16_t frame_length){
 
 #ifndef PC_TEST_ENV
 /**
- * @brief Przerwanie od pinu D+ (np. PA0). Wyzwala się TYLKO na pierwszej 
- * krawędzi preambuły, by zsynchronizować zegar.
- * @warning To jest funkcja sprzętowa (ISR). Nie wywoływać ręcznie w kodzie aplikacji!
+ * @brief D+ interupt is triggered on first slope of preamble, for clock synchronisation
+ * @warning It is hardware function (ISR).Do not call in aplication code!
  */
 void EXTI0_IRQHandler(void) {
-    // Sprawdzamy, czy to nasze przerwanie
     if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_0)) {
         
-        // 1. Czyścimy flagę przerwania
         LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_0);
         
-        // 2. Wyłączamy EXTI, żeby nie przeszkadzało nam przy kolejnych bitach
         LL_EXTI_DisableIT_0_31(LL_EXTI_LINE_0);
         
         // 3. (Phase Alignment)
         uint32_t half_period = LL_TIM_GetAutoReload(TIM3) / 2;
         LL_TIM_SetCounter(TIM3, half_period);
-        
-        // 4. Odpalamy całą maszynerię!
-        // Uruchamiamy Timer, który od teraz będzie wyzwalał ADC i DMA
+    
         LL_TIM_EnableCounter(TIM3);
         
-        // Zgłaszamy warstwie MAC (opcjonalnie), że odbiór fizyczny się rozpoczął
-        QDP_MAC_Notify_RxStarted();
+        QDP_DL_Notify_RxStarted();
     }
 }
 #endif
@@ -134,7 +129,8 @@ void PHY_RegisterCallbacks(PHY_HeaderReceived_Callback_t header_cb, PHY_FrameRec
     dl_frame_cb  = frame_cb;
 }
 
-static inline uint8_t PHY_DEM(uint16_t adc_value){ // set ADC bit resolution
+static inline uint8_t PHY_DEM(uint16_t adc_value){
+    // set ADC bit resolution
     int adc_res = 12;
     int max = (1 << adc_res) - 1;
     if (adc_value < (max/2)/(QDP_LOGIC_STATES - 1)) return 0;
@@ -156,9 +152,9 @@ void PHY_Receive(uint8_t* out_buffer, uint16_t bytes_num){
 }
  
 /**
- * @brief Główny handler przerwania strumienia DMA dla odbiornika.
+ * @brief Main handler of DMA datastream interupt for receiver.
  * 
- * @warning To jest funkcja sprzętowa (ISR). Nie wywoływać ręcznie w kodzie aplikacji!
+ * @warning It is hardware function (ISR).Do not call in aplication code!
  */
 void DMA2_Stream1_IRQHandler(void){
 #ifndef PC_TEST_ENV
@@ -168,16 +164,14 @@ void DMA2_Stream1_IRQHandler(void){
         LL_TIM_DisableCounter();
         LL_DMA_DisableStream( , );
 #else
-    // W środowisku PC testów zawsze zakładamy, 
-    // że weszliśmy tu, bo DMA skończyło pracę.
+    // Durring tests we assume the DMA finished the work 
     if (true) {
 #endif
 // -----------------------------------------------------
 
-        // CZYSTA LOGIKA - TO ZOSTAJE DLA OBU ŚRODOWISK!
         if (rx_state == PHY_STATE_HEADER){
             uint8_t header_buff[sizeof(QDP_Header_t)];
-            PHY_Receive(header_buff, 5); // Dekodowanie z tablicy
+            PHY_Receive(header_buff, 5);
 
             remaining_bytes_to_read = 0;
             if (dl_header_cb != NULL) {
@@ -188,7 +182,7 @@ void DMA2_Stream1_IRQHandler(void){
                 uint16_t bytes_to_fetch = remaining_bytes_to_read + QDP_CRC_SIZE_BYTES;
                 
 // -----------------------------------------------------
-// BLOK SPRZĘTOWY: Odpalanie kolejnej paczki DMA
+// HARDWARE BLOCK: Another frame for DMA to handle
 // -----------------------------------------------------
 #ifndef PC_TEST_ENV
                 LL_DMA_SetDataLength( , , bytes_to_fetch * 4);

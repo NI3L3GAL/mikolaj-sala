@@ -6,25 +6,46 @@
 #include "qdp_protocol.h"
 
 
+typedef enum DL_tx_State {
+    DL_TX_IDLE,
+    DL_TX_WAIT,
+    DL_TX_GO,
+    DL_TX_WAIT_ACK
+} DL_tx_State_t;
+
 /**
- * @brief Analizuje nagłówek i zwraca oczekiwaną długość payloadu.
+ * @brief Analyse header and returns payload length.
  */
 void DL_OnHandlerReceived(uint8_t* header_bytes, uint16_t* out_payload_len);
 
 /**
- * @brief Odbiera pełną ramkę z PHY, sprawdza CRC i podejmuje decyzję (ACK/NACK/Drop).
+ * @brief Receive full frame from PHY, checks CRC and (ACK/NACK/Drop) decision.
  */
 void DL_FullFrameReceived(const uint8_t* frame_bytes, uint16_t total_len);
 
 
 /**
- * @brief Buduje ramkę warstwy DL i wysyła ją przez warstwę fizyczną korzystając
- * z PHY_Send.
- * @param channel   kanał wysyłania
- * @param qos       rodzaj Quality of Service 
- * @param payload   wysyłane dane max 255B
- * @param length    długość głównej wiadomości 1-255B
+ * @brief Builds DL frame and sets flag to PHY using has_pending_tx variable.
+ * @param channel   channel of comunication
+ * @param qos       Quality of Service type 
+ * @param payload   data max 255B
+ * @param length    data length 1-255B
  */
-void QDP_Send(QDP_Channel_t channel, QDP_QoS_t qos, const uint8_t* payload, uint8_t length);
+void QDP_CreateFrame(QDP_Channel_t channel, QDP_QoS_t qos, const uint8_t* payload, uint8_t length);
+
+/**
+ * @brief Informs DL layer, PHY detected preamble and started receiving.
+ * 
+ * @details Function called from hardware interupt level (EXTI). 
+ * is used for blocking transmiter (CSMA/CA) - sets flag for medium occupancy.
+ */
+void QDP_DL_Notify_RxStarted(void);
+
+
+void DL_TX_Process(uint32_t delta_time_ms);
+
+void QDP_DL_Reset(void);
+
+void DL_Handle_ACK(uint8_t received_seq);
 
 #endif

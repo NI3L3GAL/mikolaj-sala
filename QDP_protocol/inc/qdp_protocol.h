@@ -1,27 +1,27 @@
 #ifndef QDP_PROTOCOL_H
 #define QDP_PROTOCOL_H  
 
-#define QDP_PREABLE_BYTE  0xCC
+#define QDP_PREABLE_BYTE    0xCC
 
-#define QDP_MAGIC_WORD    0xA1
+#define QDP_MAGIC_WORD      0xA1
 
-#define QDP_MAX_PAYLOAD   255
+#define QDP_MAX_PAYLOAD     255
 
-#define QDP_CRC_SIZE_BYTES 4
+#define QDP_CRC_SIZE_BYTES  4
 
-#define QDP_LOGIC_STATES 4
+#define QDP_LOGIC_STATES    4
 
 
 typedef enum Quality_of_Service {  
-    QDP_QoS_0_FnF = 0b00,  // Transmition without ACK
-    QDP_QoS_1_REQ = 0b01,  // Transmition with ACK
-    QDP_QoS_2_RESP = 0b10 // ACK/NACK response
+    QDP_QoS_0_FnF   = 0b00,  // Transmition without ACK
+    QDP_QoS_1_REQ   = 0b01,  // Transmition with ACK
+    QDP_QoS_2_RESP  = 0b10   // ACK/NACK response
 } QDP_QoS_t;
 
 typedef enum Channels{
-    QDP_SYS_CHN = 0,
-    QDP_SD_CHN = 1,
-    QDP_ACK_CHN = 2
+    QDP_SYS_CHN     = 0,
+    QDP_SD_CHN      = 1,
+    QDP_ACK_CHN     = 2
 } QDP_Channel_t;
 
 typedef enum NACK_errors{
@@ -36,8 +36,8 @@ typedef struct header{
     uint8_t preamble;
     uint8_t magic_word;
 
-    uint8_t qos     :2;
-    uint8_t channel :6;
+    uint8_t qos     : 2;
+    uint8_t channel : 6;
 
     uint8_t seq;
     uint8_t len;

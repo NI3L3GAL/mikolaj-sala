@@ -1,7 +1,7 @@
-#include <stdint.h>  // Dla typów uint8_t, uint16_t, uint32_t
-#include <stddef.h>  // Dla słowa kluczowego NULL
-#include <stdbool.h> // Dla typu bool (true/false)
-#include <string.h>  // Dla funkcji memcpy (przyda się w qdp_dl.c)
+#include <stdint.h>  
+#include <stddef.h>  
+#include <stdbool.h> 
+#include <string.h>  
 
 
 #ifndef  QDP_PHY_H
@@ -15,44 +15,44 @@ typedef enum Physical_states{
 } PHY_RX_State_t;
 
 /**
- * @brief Typ funkcji wywoływanej przez PHY po odebraniu 5 bajtów nagłówka.
- * warstwa DL musi przeanalizować nagłówek i wpisać do `out_payload_len` ile danych 
- * należy jeszcze pobrać (0 jeśli nagłówek to śmieci).
+ * @brief Function type executed by PHYafter receiving 5B header.
+ * DL layer analyse header and writes to `out_payload_len` how long the
+ * payload is (if garbage = 0)
  */
 typedef void (*PHY_HeaderReceived_Callback_t)(const uint8_t* header_bytes, uint16_t* out_payload_len);
 
 /**
- * @brief Typ funkcji wywoływanej przez PHY po odebraniu całej ramki (Nagłówek + Payload + CRC).
+ * @brief Function type executed by PHY after receiving full frame (Header + Payload + CRC).
  */
 typedef void (*PHY_FrameReceived_Callback_t)(const uint8_t* frame_bytes, uint16_t total_len);
 
 /**
- * @brief Konfiguruje piny, zegary, przerwania i kontrolery DMA dla warstwy fizycznej.
+ * @brief Pins, clocks, interupts and DMA configuration for PHY.
  * 
- * @post Rejestr BSRR wymusza stan IDLE na pinach nadawczych, a przerwania nasłuchowe są gotowe.
+ * @post BSRR register force IDLE state on tx pins, and listening interupts are ready.
  */
 void PHY_init(void);
 
 /**
- * @brief Przekształca surowe bajty ramki na komendy dla rejestru BSRR i inicjalizuje DMA.
+ * @brief Translate raw bytes into commands for BSRR register and initialize DMA.
  * 
- * @param frame_data   Wskaźnik na gotową ramkę z warstwy DL
- * @param frame_length Całkowita długość ramki w bajtach
+ * @param frame_data   Ready DL layer frame pointer
+ * @param frame_length Total frame length in bytes
  */
 void PHY_Send(const uint8_t* frame_data, uint16_t frame_length);
 
 /**
- * @brief Rejestruje funkcje zwrotne (callbacks) dla warstwy DL.
+ * @brief Register callbacks functions for DL layer.
  * 
- * @param header_cb Funkcja wywoływana natychmiast po odebraniu 5-bajtowego nagłówka.
- * @param frame_cb  Funkcja wywoływana po odebraniu całej ramki z payloadem.
+ * @param header_cb Function called right after receiving 5 byte header.
+ * @param frame_cb  Function called right after receiving full frmae.
 */
 void PHY_RegisterCallbacks(PHY_HeaderReceived_Callback_t header_cb, PHY_FrameReceived_Callback_t frame_cb);
 /**
- * @brief Przełącza piny RX w tryb aktywnego nasłuchiwania na ramkę.
+ * @brief Set RX pins into active listening mode.
  * 
- * @pre Funkcja PHY_init() musi zostać wcześniej wykonana.
- * @post Zmienna stanu odbiornika zostaje ustawiona na PHY_STATE_WAITING.
+ * @pre PHY_init() must be executed before.
+ * @post Receiver state is set to PHY_STATE_WAITING.
  */
 void PHY_Start_Listening(void);
 
