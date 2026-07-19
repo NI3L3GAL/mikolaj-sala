@@ -1,6 +1,6 @@
 # QDP (Quad Data Protocol) 🚀
 
-QDP is a custom, high-performance embedded communication protocol designed primarily for STM32 microcontrollers[cite: 5]. It features a physical layer utilizing a 4-state logic approach (similar to PAM-4 signaling)[cite: 3, 5] and a robust Data Link (MAC) layer that ensures data integrity and delivery verification[cite: 4].
+QDP is a custom, high-performance embedded communication protocol designed primarily for the STM32F4 microcontroller family. It features a physical layer utilizing a 4-state logic approach (similar to PAM-4 signaling) and a robust Data Link (MAC) layer that ensures data integrity and delivery verification.
 
 The project is built with a strong focus on testability, allowing the entire logical stack to be compiled and unit-tested on a PC without requiring physical hardware[cite: 5].
 
@@ -37,6 +37,7 @@ The QDP frame consists of a 5-byte header, a variable-length payload, and a 4-by
 
 ### 1. Physical Layer (`qdp_phy.c` / `qdp_phy.h`)
 Responsible for raw electrical signaling. 
+* **Hardware Realization**: The physical layer operates on a differential pair (D+ and D-), providing high noise immunity crucial for aerospace and high-interference environments. The 4-state logic is implemented using a custom resistor ladder. This digital-to-analog approach generates four distinct differential voltage states (effectively mapping to 0V, 1.1V, 2.2V, and 3.3V logic levels).
 * **Tx:** Translates bytes into 2-bit symbols and pushes them to transmission pins via DMA and a predefined LUT[cite: 5].
 * **Rx:** Uses an EXTI interrupt on the first preamble edge to align the ADC/DMA timer[cite: 5]. Decodes incoming analog states into a clean byte stream[cite: 5].
 
