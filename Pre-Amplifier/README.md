@@ -1,5 +1,6 @@
 # 🎚️ Audio Preamplifier with Adjustable Gain and 3-Band Tone Control
 *UNDER CONSTRUCTION*
+
 High-quality analog audio preamplifier designed and simulated in **LTspice**, featuring adjustable gain and an active three-band tone control (Bass, Mid, Treble).  
 Project developed as part of the **Analog Electronic Circuits** course at AGH University of Science and Technology.
 
