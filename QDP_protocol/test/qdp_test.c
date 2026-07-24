@@ -14,7 +14,11 @@ uint8_t mock_ostatnia_ramka[QDP_MAX_FRAME_BYTES];
 uint16_t mock_ostatnia_dlugosc = 0;
 
 static uint8_t mock_app_process_calls = 0;
+<<<<<<< HEAD
 static int mock_phy_send_calls = 0;
+=======
+static uint8_t mock_phy_send_calls = 0;
+>>>>>>> 137db1f770440e5fd6a039cf1b18f0568795f80f
 
 // Podgląd tego, co MAC pcha w górę (do warstwy aplikacji):
 bool spy_app_called = false;
@@ -336,6 +340,7 @@ void test_DL_Powinno_Porzucic_Ramke_Po_Przekroczeniu_Limitu(void) {
     // Zmienić cyfrę w asercji jeśli limit w kodzie jest inny!
     TEST_ASSERT_EQUAL_UINT8_MESSAGE(4, mock_phy_send_calls, " Maszyna nie poddala sie po przekroczeniu DL_MAX_RETIRES!");
 }
+<<<<<<< HEAD
 #include <time.h>
 #include <windows.h> 
 
@@ -381,6 +386,8 @@ void test_Performance_Throughput_Stress(void) {
     printf("Przeslano: %.2f KB\n", total_bytes / 1024.0);
     printf("Srednia przepustowosc: %.2f MB/s\n", throughput);
 }
+=======
+>>>>>>> 137db1f770440e5fd6a039cf1b18f0568795f80f
 
 // ---------------------------------------------------------
 // ODPALAMY TESTY
@@ -399,7 +406,10 @@ int main(void) {
     RUN_TEST(test_DL_Powinno_Zakonczyc_Transmisje_Po_Otrzymaniu_ACK);
     RUN_TEST(test_DL_Powinno_Zrobic_Retransmisje_Gdy_Brak_ACK);
     RUN_TEST(test_DL_Powinno_Porzucic_Ramke_Po_Przekroczeniu_Limitu);
+<<<<<<< HEAD
     RUN_TEST(test_Performance_Throughput_Stress);
+=======
+>>>>>>> 137db1f770440e5fd6a039cf1b18f0568795f80f
     
     return UNITY_END();
 }

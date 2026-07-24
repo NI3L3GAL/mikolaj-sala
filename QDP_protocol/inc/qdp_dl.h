@@ -48,6 +48,7 @@ void QDP_DL_Reset(void);
 
 void DL_Handle_ACK(uint8_t received_seq);
 
+<<<<<<< HEAD
 
 // DEBUG FUNCTIONS 
 
@@ -65,4 +66,6 @@ uint8_t Get_medium_state(void);
  * @brief Returns value of backoff_timer_ms variable
  */
 uint32_t Get_backoff(void);
+=======
+>>>>>>> 137db1f770440e5fd6a039cf1b18f0568795f80f
 #endif

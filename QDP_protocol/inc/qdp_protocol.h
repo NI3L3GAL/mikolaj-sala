@@ -5,7 +5,11 @@
 
 #define QDP_MAGIC_WORD      0xA1
 
+<<<<<<< HEAD
 #define QDP_MAX_PAYLOAD     1024
+=======
+#define QDP_MAX_PAYLOAD     255
+>>>>>>> 137db1f770440e5fd6a039cf1b18f0568795f80f
 
 #define QDP_CRC_SIZE_BYTES  4
 
