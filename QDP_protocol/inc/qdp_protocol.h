@@ -5,7 +5,7 @@
 
 #define QDP_MAGIC_WORD      0xA1
 
-#define QDP_MAX_PAYLOAD     255
+#define QDP_MAX_PAYLOAD     1024
 
 #define QDP_CRC_SIZE_BYTES  4
 

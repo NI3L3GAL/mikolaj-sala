@@ -48,4 +48,21 @@ void QDP_DL_Reset(void);
 
 void DL_Handle_ACK(uint8_t received_seq);
 
+
+// DEBUG FUNCTIONS 
+
+/**
+ * @brief Returns current state of QDP State Machine
+ */
+uint8_t Get_QDP_State_For_Debug(void);
+
+/**
+ * @brief Returns current business state of medium
+ */
+uint8_t Get_medium_state(void);
+
+/**
+ * @brief Returns value of backoff_timer_ms variable
+ */
+uint32_t Get_backoff(void);
 #endif

@@ -21,12 +21,12 @@ static volatile bool is_medium_busy = false;
 static DL_tx_State_t dl_tx_state = DL_TX_IDLE;
 static uint32_t backoff_timer_ms = 0;
 
-static uint32_t get_random_number(void) {
+static uint8_t get_random_number(void) {
     static uint32_t seed = 12345;
     seed = (seed * 1103515245 + 12345) & 0x7fffffff;
     
     // Zwraca wartość od 1 do 10 ms
-    return (seed % 10) + 1; 
+    return (seed % 10) + 1;
 }
 
 void QDP_DL_Process(uint32_t delta_time_ms){
@@ -185,9 +185,21 @@ void QDP_CreateFrame(QDP_Channel_t channel, QDP_QoS_t qos, const uint8_t* payloa
 }
 
 // tests only
+
 void QDP_DL_Reset(void) {
     has_pending_tx = false;
     dl_tx_state = DL_TX_IDLE; 
     backoff_timer_ms = 0;
     retry_counter = 0;
+}
+
+uint8_t Get_QDP_State_For_Debug(void) {
+    return dl_tx_state;
+}
+uint8_t Get_medium_state(void) {
+    return is_medium_busy;
+}
+
+uint32_t Get_backoff(void) {
+    return ;
 }
