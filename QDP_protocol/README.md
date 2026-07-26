@@ -19,7 +19,7 @@ The project is built with a strong focus on testability, allowing the entire log
 
 ## 📦 Frame Structure
 
-The QDP frame consists of a 5-byte header, a variable-length payload, and a 4-byte CRC[cite: 3]. The absolute maximum frame size is 264 bytes[cite: 3].
+The QDP frame consists of a 5-byte header, a variable-length payload, and a 4-byte CRC[cite: 3]. The absolute maximum frame size is 1033 bytes[cite: 3].
 
 | Field | Size | Description |
 | :--- | :--- | :--- |
@@ -27,8 +27,8 @@ The QDP frame consists of a 5-byte header, a variable-length payload, and a 4-by
 | **Magic Word** | 1 Byte | Protocol identifier (`0xA1`) used as a first-line frame validation[cite: 3, 4]. |
 | **QoS + Channel**| 1 Byte | 2 bits for QoS level, 6 bits for virtual channel ID[cite: 3]. |
 | **Sequence** | 1 Byte | Rolling sequence number (`seq`) for tracking packets and retransmissions[cite: 3, 4]. |
-| **Length** | 1 Byte | Size of the payload (`0` to `255` bytes)[cite: 3]. |
-| **Payload** | 0-255 Bytes| The actual application data[cite: 3]. |
+| **Length** | 1 Byte | Size of the payload (`0` to `1024` bytes)[cite: 3]. |
+| **Payload** | 0-1024 Bytes| The actual application data[cite: 3]. |
 | **CRC** | 4 Bytes | 32-bit Cyclic Redundancy Check covering Header and Payload[cite: 3, 4]. |
 
 ---
