@@ -1,6 +1,6 @@
 # Hi, I’m Mikołaj 👋
 
-🎓 3nd year Electronics & Telecommunications student at **AGH University of Science and Technology**  
+🎓 3rd year Electronics & Telecommunications student at **AGH University of Science and Technology**  
 🚀 Team lead of **AGH Space Systems** (Rocket Electronics Division)  
 🔧 Passionate about **hardware design, PCB development, and aerospace electronics**  
 
