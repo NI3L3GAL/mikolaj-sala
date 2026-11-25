@@ -97,23 +97,33 @@ bool parseComplexString(const std::string& rawInput, Scalar& result) {
         }
     }
 
+
     // Algebraic form with 'i' or 'j' eg. "3+4i", "2-i", "+i", "-i", "5i"
     char lastChar = static_cast<char>(std::tolower(static_cast<unsigned char>(s.back())));
     if (lastChar == 'i' || lastChar == 'j') {
         std::string body = trim(s.substr(0, s.size() - 1));
-        if (body.empty() || body == "+") {
+
+        std::string compactBody;
+        compactBody.reserve(body.size());
+        for (char ch : body) {
+            if (!std::isspace(static_cast<unsigned char>(ch))) {
+                compactBody.push_back(ch);
+            }
+        }
+
+        if (compactBody.empty() || compactBody == "+") {
             result = Scalar(0.0, 1.0);
             return true;
         }
-        if (body == "-") {
+        if (compactBody == "-") {
             result = Scalar(0.0, -1.0);
             return true;
         }
 
         // Seek for last char '+' lub '-' (not at pos 0,there can be sign of real part)
         size_t splitPos = std::string::npos;
-        for (size_t i = 1; i < body.size(); ++i) {
-            if (body[i] == '+' || body[i] == '-') {
+        for (size_t i = 1; i < compactBody.size(); ++i) {
+            if (compactBody[i] == '+' || compactBody[i] == '-') {
                 splitPos = i;
             }
         }
@@ -121,15 +131,15 @@ bool parseComplexString(const std::string& rawInput, Scalar& result) {
         if (splitPos == std::string::npos) {
             // only imaginary part, eg. "4i" lub "-2.5i"
             char* endIm = nullptr;
-            double im = std::strtod(body.c_str(), &endIm);
+            double im = std::strtod(compactBody.c_str(), &endIm);
             if (*endIm == '\0' && std::isfinite(im)) {
                 result = Scalar(0.0, im);
                 return true;
             }
             return false;
         } else {
-            std::string rePart = trim(body.substr(0, splitPos));
-            std::string imPart = trim(body.substr(splitPos));
+            std::string rePart = trim(compactBody.substr(0, splitPos));
+            std::string imPart = trim(compactBody.substr(splitPos));
             if (imPart == "+") {
                 imPart = "1.0";
             } else if (imPart == "-") {
