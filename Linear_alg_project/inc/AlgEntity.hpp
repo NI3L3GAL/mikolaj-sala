@@ -1,5 +1,5 @@
 #ifndef ALGEBRA_ENTITY_HPP
-#define ALGEBRA_ENTITY_HPP_HPP
+#define ALGEBRA_ENTITY_HPP
 
 #include "Scalar.hpp"
 #include <string>
