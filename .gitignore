@@ -1,0 +1,37 @@
+# Compiled binaries and object files
+*.exe
+*.out
+*.app
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.d
+
+# Build directories
+build/
+out/
+dist/
+
+# Runtime / temporary files
+workspace_state.txt
+*.tmp
+*.log
+
+# VS Code (keep .vscode/tasks.json if needed, ignore local settings/cache)
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/settings.json
+.vscode/.browse.VC.db*
+.vscode/ipch/
+
+# OS & editor artifacts
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
